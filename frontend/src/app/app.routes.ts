@@ -13,7 +13,12 @@ export const routes: Routes = [
   },
   {
     path: 'properties',
-    loadComponent: () => import('./properties/property-list/property-list').then(m => m.PropertyList),
+    loadComponent: () => import('./properties/property-list/property-list.component').then(m => m.PropertyListComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'add-property',
+    loadComponent: () => import('./properties/property-add/property-add.component').then(m => m.AddPropertyComponent),
     canActivate: [authGuard]
   },
   { path: '**', redirectTo: '/properties' }

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PropertyList } from './property-list';
+import { PropertyList } from './property-list.component';
 
 describe('PropertyList', () => {
   let component: PropertyList;

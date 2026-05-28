@@ -1,0 +1,167 @@
+<div class="page-wrapper">
+
+  <nav class="navbar">
+    <div class="brand" routerLink="/properties" style="cursor:pointer">
+      <i class="ti ti-building-estate"></i>
+      EstateAI
+    </div>
+    <div class="nav-right">
+      <button class="btn-back" routerLink="/properties">
+        <i class="ti ti-arrow-left"></i> Back to Properties
+      </button>
+    </div>
+  </nav>
+
+  <div class="content">
+    <div class="page-header">
+      <h1>Add New Property</h1>
+      <p>Fill in the details below to list your property</p>
+    </div>
+
+    <div class="success-banner" *ngIf="success">
+      <i class="ti ti-circle-check"></i>
+      Property added successfully! Redirecting...
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-layout">
+
+        <div class="form-section">
+          <h2>Basic Information</h2>
+
+          <div class="form-group">
+            <label>Property Title</label>
+            <input type="text" formControlName="title"
+                   placeholder="e.g. Modern Apartment in La Marsa" />
+            <span class="error" *ngIf="form.get('title')?.touched && form.get('title')?.invalid">
+              Title is required
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea formControlName="description" rows="4"
+                      placeholder="Describe the property..."></textarea>
+            <span class="error" *ngIf="form.get('description')?.touched && form.get('description')?.invalid">
+              Description is required
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label>Image URL</label>
+            <input type="text" formControlName="imageUrl"
+                   placeholder="https://example.com/image.jpg" />
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Property Details</h2>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Property Type</label>
+              <select formControlName="propertyType">
+                <option *ngFor="let type of propertyTypes" [value]="type">
+                  {{ type }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select formControlName="status">
+                <option *ngFor="let s of propertyStatuses" [value]="s">
+                  {{ s.replace('_', ' ') }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Price (DT)</label>
+              <div class="input-prefix">
+                <span>DT</span>
+                <input type="number" formControlName="price" placeholder="250000" />
+              </div>
+              <span class="error" *ngIf="form.get('price')?.touched && form.get('price')?.invalid">
+                Valid price required
+              </span>
+            </div>
+            <div class="form-group">
+              <label>Surface (m²)</label>
+              <div class="input-prefix">
+                <span>m²</span>
+                <input type="number" formControlName="surface" placeholder="120" />
+              </div>
+              <span class="error" *ngIf="form.get('surface')?.touched && form.get('surface')?.invalid">
+                Valid surface required
+              </span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Number of Rooms</label>
+              <input type="number" formControlName="rooms" placeholder="3" />
+              <span class="error" *ngIf="form.get('rooms')?.touched && form.get('rooms')?.invalid">
+                Required
+              </span>
+            </div>
+            <div class="form-group">
+              <label>Property Age (years)</label>
+              <input type="number" formControlName="age" placeholder="5" />
+              <span class="error" *ngIf="form.get('age')?.touched && form.get('age')?.invalid">
+                Required
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Location</h2>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>City / Location</label>
+              <div class="input-icon">
+                <i class="ti ti-map-pin"></i>
+                <input type="text" formControlName="location"
+                       placeholder="e.g. Tunis, La Marsa" />
+              </div>
+              <span class="error" *ngIf="form.get('location')?.touched && form.get('location')?.invalid">
+                Location is required
+              </span>
+            </div>
+            <div class="form-group">
+              <label>District</label>
+              <div class="input-icon">
+                <i class="ti ti-building"></i>
+                <input type="text" formControlName="district"
+                       placeholder="e.g. La Marsa" />
+              </div>
+              <span class="error" *ngIf="form.get('district')?.touched && form.get('district')?.invalid">
+                District is required
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="error-msg" *ngIf="error">
+        <i class="ti ti-alert-circle"></i> {{ error }}
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" routerLink="/properties">
+          Cancel
+        </button>
+        <button type="submit" class="btn-submit" [disabled]="loading">
+          <i class="ti ti-plus"></i>
+          {{ loading ? 'Adding...' : 'Add Property' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

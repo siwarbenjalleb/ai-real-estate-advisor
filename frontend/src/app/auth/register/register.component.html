@@ -1,64 +1,118 @@
-<div class="register-container">
-  <mat-card class="register-card">
-    <mat-card-header>
-      <mat-card-title>Create Account</mat-card-title>
-      <mat-card-subtitle>Join the real estate platform</mat-card-subtitle>
-    </mat-card-header>
-
-    <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-        <div class="name-row">
-          <mat-form-field appearance="outline">
-            <mat-label>First Name</mat-label>
-            <input matInput formControlName="firstName">
-            <mat-error *ngIf="form.get('firstName')?.hasError('required')">Required</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Last Name</mat-label>
-            <input matInput formControlName="lastName">
-            <mat-error *ngIf="form.get('lastName')?.hasError('required')">Required</mat-error>
-          </mat-form-field>
+<div class="register-wrapper">
+  <div class="left-panel">
+    <div class="logo">
+      <i class="ti ti-building-estate"></i>
+      EstateAI
+    </div>
+    <div class="hero-text">
+      <span class="tag">Join EstateAI</span>
+      <h1>Start your real estate journey today</h1>
+      <p>Get access to AI-powered price predictions, smart recommendations, and investment insights.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <i class="ti ti-brain"></i>
+        <div>
+          <h4>AI Price Prediction</h4>
+          <p>Get accurate property valuations instantly</p>
         </div>
+      </div>
+      <div class="feature">
+        <i class="ti ti-chart-line"></i>
+        <div>
+          <h4>Investment Analysis</h4>
+          <p>ROI estimates and risk assessment</p>
+        </div>
+      </div>
+      <div class="feature">
+        <i class="ti ti-map-pin"></i>
+        <div>
+          <h4>Smart Search</h4>
+          <p>Find properties matching your criteria</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" type="email">
-          <mat-icon matSuffix>email</mat-icon>
-          <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
-          <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email</mat-error>
-        </mat-form-field>
+  <div class="right-panel">
+    <div class="form-header">
+      <h2>Create your account</h2>
+      <p>Fill in the details below to get started</p>
+    </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
-          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-          <mat-error *ngIf="form.get('password')?.hasError('minlength')">Minimum 6 characters</mat-error>
-        </mat-form-field>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>I am a</mat-label>
-          <mat-select formControlName="role">
-            <mat-option value="BUYER">Buyer</mat-option>
-            <mat-option value="SELLER">Seller</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div class="name-row">
+        <div class="form-group">
+          <label>First name</label>
+          <input type="text" formControlName="firstName" placeholder="Ikram" />
+          <span class="error" *ngIf="form.get('firstName')?.touched && form.get('firstName')?.invalid">
+            Required
+          </span>
+        </div>
+        <div class="form-group">
+          <label>Last name</label>
+          <input type="text" formControlName="lastName" placeholder="Ben" />
+          <span class="error" *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid">
+            Required
+          </span>
+        </div>
+      </div>
 
-        <div class="error-message" *ngIf="error">{{ error }}</div>
+      <div class="form-group">
+        <label>Email address</label>
+        <div class="input-wrapper">
+          <input type="email" formControlName="email" placeholder="you@example.com" />
+          <i class="ti ti-mail"></i>
+        </div>
+        <span class="error" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+          Enter a valid email
+        </span>
+      </div>
 
-        <button mat-raised-button color="primary" type="submit"
-          class="full-width submit-btn" [disabled]="loading">
-          {{ loading ? 'Creating account...' : 'Register' }}
-        </button>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrapper">
+          <input [type]="hidePassword ? 'password' : 'text'"
+                 formControlName="password" placeholder="Min. 6 characters" />
+          <i class="ti" [class.ti-eye-off]="hidePassword" [class.ti-eye]="!hidePassword"
+             (click)="hidePassword = !hidePassword" style="cursor:pointer"></i>
+        </div>
+        <span class="error" *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+          Minimum 6 characters
+        </span>
+      </div>
 
-      </form>
-    </mat-card-content>
+      <div class="form-group">
+        <label>I am a</label>
+        <div class="role-selector">
+          <div class="role-option"
+               [class.selected]="form.get('role')?.value === 'BUYER'"
+               (click)="form.get('role')?.setValue('BUYER')">
+            <i class="ti ti-search"></i>
+            <span>Buyer</span>
+            <p>Looking for properties</p>
+          </div>
+          <div class="role-option"
+               [class.selected]="form.get('role')?.value === 'SELLER'"
+               (click)="form.get('role')?.setValue('SELLER')">
+            <i class="ti ti-home-plus"></i>
+            <span>Seller</span>
+            <p>Listing properties</p>
+          </div>
+        </div>
+      </div>
 
-    <mat-card-actions>
-      <p class="login-link">Already have an account? <a routerLink="/login">Sign in</a></p>
-    </mat-card-actions>
-  </mat-card>
+      <div class="error-msg" *ngIf="error">{{ error }}</div>
+
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        {{ loading ? 'Creating account...' : 'Create account' }}
+      </button>
+
+    </form>
+
+    <div class="footer-text">
+      Already have an account? <a routerLink="/login">Sign in</a>
+    </div>
+  </div>
 </div>
