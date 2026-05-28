@@ -12,22 +12,32 @@ ENCODERS_PATH = "models/encoders.pkl"
 
 def train_model():
     # Load dataset
-    df = pd.read_csv("data/houses.csv", sep="\t")
+    df = pd.read_csv("data/houses.csv", sep=",", on_bad_lines='skip')
 
-    print("Columns:", df.columns.tolist())
+    # Clean column names
+    df.columns = df.columns.str.strip().str.replace('^,', '', regex=True)
+    print("Cleaned columns:", df.columns.tolist())
     print("Shape:", df.shape)
-    print(df.head())
 
     # Drop rows with missing values in key columns
     df = df.dropna(subset=["price", "superficie", "chambres", "salles_de_bains", "city", "state", "category"])
 
-    # Remove non-numeric prices
+    # Convert to numeric
     df["price"] = pd.to_numeric(df["price"], errors="coerce")
-    df = df.dropna(subset=["price"])
+    df["superficie"] = pd.to_numeric(df["superficie"], errors="coerce")
+    df["chambres"] = pd.to_numeric(df["chambres"], errors="coerce")
+    df["salles_de_bains"] = pd.to_numeric(df["salles_de_bains"], errors="coerce")
+    df = df.dropna(subset=["price", "superficie", "chambres", "salles_de_bains"])
 
-    # Remove outliers
-    df = df[df["price"] > 1000]
+    # Remove outliers - keep realistic price range
+    df = df[df["price"] > 10000]
+    df = df[df["price"] < 3000000]
     df = df[df["superficie"] > 10]
+    df = df[df["superficie"] < 2000]
+    df = df[df["chambres"] > 0]
+    df = df[df["chambres"] < 20]
+
+    print(f"Rows after cleaning: {len(df)}")
 
     # Features
     features = ["superficie", "chambres", "salles_de_bains", "city", "state", "category"]
@@ -46,8 +56,15 @@ def train_model():
     # Train/test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Train model
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    # Train model with better parameters
+    model = RandomForestRegressor(
+        n_estimators=200,
+        max_depth=15,
+        min_samples_split=5,
+        min_samples_leaf=2,
+        random_state=42,
+        n_jobs=-1
+    )
     model.fit(X_train, y_train)
 
     # Evaluate
@@ -95,7 +112,7 @@ def predict_price(superficie, chambres, salles_de_bains, city, state, category):
 
     predicted_price = model.predict(input_data)[0]
 
-    # Calculate investment score (simple formula)
+    # Calculate investment score
     investment_score = min(100, max(0, int(100 - (predicted_price / 1000000) * 10)))
     roi = round(8.5 - (predicted_price / 1000000), 2)
     risk = "Low" if investment_score > 70 else "Medium" if investment_score > 40 else "High"
