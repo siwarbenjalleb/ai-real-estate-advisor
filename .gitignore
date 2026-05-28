@@ -1,0 +1,16 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pkl
+*.csv
+
+# ML models
+ml-service/models/
+ml-service/data/
+
+# Java
+backend/target/
+
+# Node
+frontend/node_modules/
