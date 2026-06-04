@@ -1,0 +1,185 @@
+<div class="page">
+
+  <div class="topbar">
+    <div>
+      <h1>{{ getGreeting() }}, {{ firstName }} 👋</h1>
+      <p>Manage your property listings and track performance</p>
+    </div>
+    <button class="btn-primary" routerLink="/add-property">
+      <i class="ti ti-plus"></i> Add New Property
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon gold">
+        <i class="ti ti-building"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num">{{ stats.total }}</div>
+        <div class="stat-label">Total Listings</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <i class="ti ti-tag"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num">{{ stats.forSale }}</div>
+        <div class="stat-label">For Sale</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <i class="ti ti-key"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num">{{ stats.forRent }}</div>
+        <div class="stat-label">For Rent</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">
+        <i class="ti ti-circle-check"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num">{{ stats.sold }}</div>
+        <div class="stat-label">Sold</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+
+    <div class="card full-width">
+      <div class="card-header">
+        <h2>My Listings</h2>
+        <button class="btn-primary small" routerLink="/add-property">
+          <i class="ti ti-plus"></i> Add Property
+        </button>
+      </div>
+
+      <div class="loading-state" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Loading your listings...</p>
+      </div>
+
+      <div class="empty-state" *ngIf="!loading && myProperties.length === 0">
+        <i class="ti ti-building-off"></i>
+        <h3>No listings yet</h3>
+        <p>Start by adding your first property</p>
+        <button class="btn-primary" routerLink="/add-property">
+          <i class="ti ti-plus"></i> Add Property
+        </button>
+      </div>
+
+      <div class="property-table" *ngIf="!loading && myProperties.length > 0">
+        <div class="table-header">
+          <span>Property</span>
+          <span>Location</span>
+          <span>Price</span>
+          <span>Type</span>
+          <span>Status</span>
+          <span>Actions</span>
+        </div>
+
+        <div class="table-row" *ngFor="let p of myProperties"
+             (click)="goToProperty(p.id)">
+          <div class="prop-cell">
+            <div class="prop-img">
+              <img [src]="p.imageUrl || 'https://placehold.co/48x48/1a2942/ffffff?text=🏠'"
+                   [alt]="p.title" />
+            </div>
+            <div>
+              <div class="prop-title">{{ p.title }}</div>
+              <div class="prop-surface">{{ p.surface }} m² · {{ p.rooms }} rooms</div>
+            </div>
+          </div>
+          <div class="loc-cell">
+            <i class="ti ti-map-pin"></i>
+            {{ p.location }}
+          </div>
+          <div class="price-cell">{{ p.price | number }} DT</div>
+          <div class="type-cell">
+            <span class="type-badge">{{ p.propertyType }}</span>
+          </div>
+          <div class="status-cell">
+            <span class="status-badge" [class]="getStatusClass(p.status)">
+              {{ p.status?.replace('_', ' ') }}
+            </span>
+          </div>
+          <div class="actions-cell" (click)="$event.stopPropagation()">
+            <button class="btn-icon edit" (click)="editProperty(p.id, $event)">
+              <i class="ti ti-edit"></i>
+            </button>
+            <button class="btn-icon delete" (click)="deleteProperty(p.id, $event)">
+              <i class="ti ti-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-grid">
+      <div class="card">
+        <div class="card-header">
+          <h2>Quick Actions</h2>
+        </div>
+        <div class="quick-actions">
+          <button class="action-btn" routerLink="/add-property">
+            <i class="ti ti-plus"></i>
+            <span>Add Property</span>
+          </button>
+          <button class="action-btn" routerLink="/market-analytics">
+            <i class="ti ti-chart-line"></i>
+            <span>Market Analytics</span>
+          </button>
+          <button class="action-btn" routerLink="/properties">
+            <i class="ti ti-search"></i>
+            <span>Browse Market</span>
+          </button>
+          <button class="action-btn" routerLink="/profile">
+            <i class="ti ti-user"></i>
+            <span>Edit Profile</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Listing Summary</h2>
+        </div>
+        <div class="summary-list">
+          <div class="summary-item">
+            <span class="summary-dot for-sale"></span>
+            <span class="summary-label">For Sale</span>
+            <span class="summary-val">{{ stats.forSale }}</span>
+            <div class="summary-bar">
+              <div class="summary-fill for-sale"
+                   [style.width.%]="stats.total ? (stats.forSale / stats.total * 100) : 0"></div>
+            </div>
+          </div>
+          <div class="summary-item">
+            <span class="summary-dot for-rent"></span>
+            <span class="summary-label">For Rent</span>
+            <span class="summary-val">{{ stats.forRent }}</span>
+            <div class="summary-bar">
+              <div class="summary-fill for-rent"
+                   [style.width.%]="stats.total ? (stats.forRent / stats.total * 100) : 0"></div>
+            </div>
+          </div>
+          <div class="summary-item">
+            <span class="summary-dot sold"></span>
+            <span class="summary-label">Sold</span>
+            <span class="summary-val">{{ stats.sold }}</span>
+            <div class="summary-bar">
+              <div class="summary-fill sold"
+                   [style.width.%]="stats.total ? (stats.sold / stats.total * 100) : 0"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

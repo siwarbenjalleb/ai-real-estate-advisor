@@ -1,0 +1,58 @@
+<div class="page">
+  <div class="topbar">
+    <div>
+      <h1>My Favorites</h1>
+      <p>Properties you saved for later</p>
+    </div>
+    <button class="btn-outline" routerLink="/properties">
+      <i class="ti ti-search"></i> Browse More
+    </button>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading favorites...</p>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && properties.length === 0">
+    <i class="ti ti-heart-off"></i>
+    <h3>No favorites yet</h3>
+    <p>Browse properties and click the heart icon to save them here</p>
+    <button class="btn-primary" routerLink="/properties">
+      <i class="ti ti-search"></i> Browse Properties
+    </button>
+  </div>
+
+  <div class="property-grid" *ngIf="!loading && properties.length > 0">
+    <div class="property-card" *ngFor="let p of properties">
+      <div class="card-image" (click)="goToProperty(p.id)">
+        <img [src]="p.imageUrl || 'https://placehold.co/400x220/1a2942/ffffff?text=No+Image'"
+             [alt]="p.title" />
+        <span class="status-badge" [class]="getStatusClass(p.status)">
+          {{ p.status?.replace('_', ' ') }}
+        </span>
+        <button class="heart-btn active" (click)="removeFromFavorites(p.id, $event)">
+          <i class="ti ti-heart-filled"></i>
+        </button>
+      </div>
+      <div class="card-body">
+        <h3 (click)="goToProperty(p.id)">{{ p.title }}</h3>
+        <div class="location">
+          <i class="ti ti-map-pin"></i>
+          {{ p.location }}
+        </div>
+        <div class="meta">
+          <span><i class="ti ti-ruler"></i> {{ p.surface }} m²</span>
+          <span><i class="ti ti-bed"></i> {{ p.rooms }} rooms</span>
+          <span><i class="ti ti-calendar"></i> {{ p.age }} yrs</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">{{ p.price | number }} DT</div>
+          <button class="btn-detail" (click)="goToProperty(p.id)">
+            View Details <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

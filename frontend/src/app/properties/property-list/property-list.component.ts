@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -18,17 +18,33 @@ export class PropertyListComponent implements OnInit {
   search = '';
   selectedType = '';
   selectedStatus = '';
+  userRole = localStorage.getItem('role');
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
+    this.loadProperties();
+  }
+
+  loadProperties() {
+    this.loading = true;
     this.http.get<any[]>(`${environment.apiUrl}/properties`).subscribe({
       next: (data) => {
-        this.properties = data;
-        this.filtered = data;
+        this.properties = [...data];
+        this.filtered = [...data];
         this.loading = false;
+        this.cdr.detectChanges();
+        console.log('Properties loaded:', this.filtered.length);
       },
-      error: () => this.loading = false
+      error: (err) => {
+        console.error('Error:', err);
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -41,6 +57,7 @@ export class PropertyListComponent implements OnInit {
       const matchStatus = !this.selectedStatus || p.status === this.selectedStatus;
       return matchSearch && matchType && matchStatus;
     });
+    this.cdr.detectChanges();
   }
 
   onSearch(event: any) {

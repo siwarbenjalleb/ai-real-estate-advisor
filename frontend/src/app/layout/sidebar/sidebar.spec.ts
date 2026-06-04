@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PropertyAdd } from './property-add.component';
+import { Sidebar } from './sidebar.component';
 
-describe('PropertyAdd', () => {
-  let component: PropertyAdd;
-  let fixture: ComponentFixture<PropertyAdd>;
+describe('Sidebar', () => {
+  let component: Sidebar;
+  let fixture: ComponentFixture<Sidebar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PropertyAdd],
+      imports: [Sidebar],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PropertyAdd);
+    fixture = TestBed.createComponent(Sidebar);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

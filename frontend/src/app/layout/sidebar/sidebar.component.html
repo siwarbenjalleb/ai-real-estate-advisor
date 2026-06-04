@@ -1,0 +1,69 @@
+<div class="sidebar">
+  <div class="sb-logo">
+    <i class="ti ti-building-estate"></i>
+    EstateAI
+  </div>
+
+  <div class="sb-section">Main</div>
+
+  <a class="sb-item" [routerLink]="userRole === 'SELLER' ? '/seller-dashboard' : '/dashboard'"
+     routerLinkActive="active">
+    <i class="ti ti-layout-dashboard"></i>
+    Dashboard
+  </a>
+
+  <a class="sb-item" routerLink="/properties" routerLinkActive="active">
+    <i class="ti ti-building"></i>
+    Properties
+  </a>
+
+  <a class="sb-item" routerLink="/favorites" routerLinkActive="active"
+     *ngIf="userRole === 'BUYER'">
+    <i class="ti ti-heart"></i>
+    Favorites
+  </a>
+
+  <a class="sb-item" routerLink="/my-properties" routerLinkActive="active"
+     *ngIf="userRole === 'SELLER'">
+    <i class="ti ti-list"></i>
+    My Listings
+  </a>
+
+  <a class="sb-item" routerLink="/add-property" routerLinkActive="active"
+     *ngIf="userRole === 'SELLER'">
+    <i class="ti ti-plus"></i>
+    Add Property
+  </a>
+
+  <div class="sb-section">AI Tools</div>
+
+  <a class="sb-item" routerLink="/market-analytics" routerLinkActive="active">
+    <i class="ti ti-chart-line"></i>
+    Market Analytics
+  </a>
+
+  <a class="sb-item" routerLink="/mortgage-calculator" routerLinkActive="active">
+    <i class="ti ti-calculator"></i>
+    Mortgage Calc
+  </a>
+
+  <div class="sb-section">Account</div>
+
+  <a class="sb-item" routerLink="/profile" routerLinkActive="active">
+    <i class="ti ti-user"></i>
+    Profile
+  </a>
+
+  <div class="sb-bottom">
+    <div class="sb-user">
+      <div class="sb-avatar">{{ initials }}</div>
+      <div class="sb-info">
+        <div class="sb-name">{{ firstName }} {{ lastName }}</div>
+        <div class="sb-role">{{ userRole }}</div>
+      </div>
+      <button class="sb-logout" (click)="logout()">
+        <i class="ti ti-logout"></i>
+      </button>
+    </div>
+  </div>
+</div>

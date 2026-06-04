@@ -8,6 +8,8 @@ export interface AuthResponse {
   token: string;
   role: string;
   email: string;
+  firstName: string;
+  lastName: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -33,6 +35,9 @@ export class AuthService {
   logout() {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.roleKey);
+    localStorage.removeItem('email');
+    localStorage.removeItem('firstName');
+    localStorage.removeItem('lastName');
     this.isLoggedInSubject.next(false);
   }
 
@@ -47,6 +52,9 @@ export class AuthService {
   private saveToken(res: AuthResponse) {
     localStorage.setItem(this.tokenKey, res.token);
     localStorage.setItem(this.roleKey, res.role);
+    localStorage.setItem('email', res.email);
+    localStorage.setItem('firstName', res.firstName || '');
+    localStorage.setItem('lastName', res.lastName || '');
     this.isLoggedInSubject.next(true);
   }
 

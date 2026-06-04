@@ -1,0 +1,185 @@
+<div class="page-wrapper">
+
+  
+
+  <div class="loading-state" *ngIf="loadingProperty">
+    <div class="spinner"></div>
+    <p>Loading property...</p>
+  </div>
+
+  <div class="error-state" *ngIf="error">
+    <i class="ti ti-alert-circle"></i>
+    <p>{{ error }}</p>
+    <button routerLink="/properties">Go Back</button>
+  </div>
+
+  <div class="content" *ngIf="property && !loadingProperty">
+
+    <div class="property-hero">
+      <img [src]="property.imageUrl || 'https://placehold.co/1200x400/1a2942/ffffff?text=No+Image'"
+           [alt]="property.title" />
+      <div class="hero-overlay">
+        <div class="hero-content">
+          <div class="badges">
+            <span class="status-badge" [class]="property.status?.toLowerCase().replace('_','-')">
+              {{ property.status?.replace('_', ' ') }}
+            </span>
+            <span class="type-badge">{{ property.propertyType }}</span>
+          </div>
+          <h1>{{ property.title }}</h1>
+          <div class="location">
+            <i class="ti ti-map-pin"></i>
+            {{ property.location }}
+          </div>
+          <div class="price">{{ property.price | number }} DT</div>
+           <button class="heart-btn" [class.active]="isFavorite" (click)="toggleFavorite()">
+    <i class="ti" [class.ti-heart]="!isFavorite" [class.ti-heart-filled]="isFavorite"></i>
+    {{ isFavorite ? 'Saved' : 'Save' }}
+  </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-layout">
+
+      <div class="main-content">
+
+        <div class="section-card">
+          <h2>Property Details</h2>
+          <div class="details-grid">
+            <div class="detail-item">
+              <i class="ti ti-ruler"></i>
+              <div>
+                <span class="detail-label">Surface</span>
+                <span class="detail-value">{{ property.surface }} m²</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <i class="ti ti-bed"></i>
+              <div>
+                <span class="detail-label">Rooms</span>
+                <span class="detail-value">{{ property.rooms }}</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <i class="ti ti-calendar"></i>
+              <div>
+                <span class="detail-label">Age</span>
+                <span class="detail-value">{{ property.age }} years</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <i class="ti ti-building"></i>
+              <div>
+                <span class="detail-label">District</span>
+                <span class="detail-value">{{ property.district }}</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <i class="ti ti-user"></i>
+              <div>
+                <span class="detail-label">Owner</span>
+                <span class="detail-value">{{ property.owner?.firstName }} {{ property.owner?.lastName }}</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <i class="ti ti-clock"></i>
+              <div>
+                <span class="detail-label">Listed</span>
+                <span class="detail-value">{{ property.createdAt | date:'mediumDate' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <h2>Description</h2>
+          <p class="description">{{ property.description }}</p>
+        </div>
+
+      </div>
+
+      <div class="sidebar">
+
+        <div class="section-card price-card">
+          <div class="price-label">Listed Price</div>
+          <div class="price-value">{{ property.price | number }} DT</div>
+          <button class="btn-contact">
+            <i class="ti ti-phone"></i> Contact Seller
+          </button>
+        </div>
+
+        <div class="section-card ai-card">
+          <div class="ai-header">
+            <i class="ti ti-brain"></i>
+            <div>
+              <h3>AI Price Prediction</h3>
+              <p>Get instant AI-powered valuation</p>
+            </div>
+          </div>
+
+          <div *ngIf="!prediction && !loadingPrediction">
+            <p class="ai-desc">
+              Our ML model analyzes location, size, and market trends to estimate the real value of this property.
+            </p>
+            <button class="btn-predict" (click)="getPrediction()">
+              <i class="ti ti-sparkles"></i>
+              Get AI Prediction
+            </button>
+          </div>
+
+          <div class="loading-prediction" *ngIf="loadingPrediction">
+            <div class="spinner"></div>
+            <p>Analyzing property...</p>
+          </div>
+
+          <div class="prediction-results" *ngIf="prediction && !loadingPrediction">
+            <div class="predicted-price">
+              <span class="pred-label">Estimated Value</span>
+              <span class="pred-value">{{ prediction.predictedPrice | number }} DT</span>
+            </div>
+
+            <div class="prediction-stats">
+              <div class="pred-stat">
+                <div class="stat-circle" [style.borderColor]="getScoreColor(prediction.investmentScore)">
+                  <span [style.color]="getScoreColor(prediction.investmentScore)">
+                    {{ prediction.investmentScore }}
+                  </span>
+                  <small>/ 100</small>
+                </div>
+                <span class="stat-name">Investment Score</span>
+              </div>
+
+              <div class="pred-stat">
+                <div class="stat-value-box">
+                  {{ prediction.roiEstimation }}%
+                </div>
+                <span class="stat-name">Expected ROI</span>
+              </div>
+
+              <div class="pred-stat">
+                <div class="risk-badge" [class]="getRiskColor(prediction.riskLevel)">
+                  {{ prediction.riskLevel }}
+                </div>
+                <span class="stat-name">Risk Level</span>
+              </div>
+            </div>
+
+            <div class="price-comparison">
+              <div class="comp-item">
+                <span class="comp-label">Listed Price</span>
+                <span class="comp-value listed">{{ property.price | number }} DT</span>
+              </div>
+              <div class="comp-divider"></div>
+              <div class="comp-item">
+                <span class="comp-label">AI Estimate</span>
+                <span class="comp-value predicted">{{ prediction.predictedPrice | number }} DT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

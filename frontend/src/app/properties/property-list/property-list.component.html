@@ -1,28 +1,10 @@
 <div class="page-wrapper">
 
-  <nav class="navbar">
-    <div class="brand">
-      <i class="ti ti-building-estate"></i>
-      EstateAI
-    </div>
-    <div class="nav-links">
-      <a routerLink="/properties" class="active">Properties</a>
-      <a routerLink="/add-property">Add Property</a>
-    </div>
-    <div class="nav-right">
-      <button class="btn-add" routerLink="/add-property">
-        <i class="ti ti-plus"></i> Add Property
-      </button>
-      <button class="btn-logout" (click)="logout()">
-        <i class="ti ti-logout"></i>
-      </button>
-    </div>
-  </nav>
+
 
   <div class="hero-section">
     <h1>Find Your Dream Property</h1>
     <p>Explore thousands of properties with AI-powered insights</p>
-
     <div class="search-bar">
       <i class="ti ti-search"></i>
       <input type="text" placeholder="Search by title or location..."
@@ -60,14 +42,14 @@
       <i class="ti ti-home-off"></i>
       <h3>No properties found</h3>
       <p>Try adjusting your filters or add a new property</p>
-      <button class="btn-primary" routerLink="/add-property">
+      <button class="btn-primary" routerLink="/add-property"
+              *ngIf="userRole === 'SELLER' || userRole === 'ADMIN'">
         <i class="ti ti-plus"></i> Add Property
       </button>
     </div>
 
     <div class="property-grid" *ngIf="!loading && filtered.length > 0">
-      <div class="property-card" *ngFor="let property of filtered"
-           (click)="goToDetail(property.id)">
+      <div class="property-card" *ngFor="let property of filtered">
 
         <div class="card-image">
           <img [src]="property.imageUrl || 'https://placehold.co/400x220/1a2942/ffffff?text=No+Image'"
@@ -103,12 +85,14 @@
 
           <div class="card-footer">
             <div class="price">{{ property.price | number }} DT</div>
-            <button class="btn-detail">
+            <button class="btn-detail" (click)="goToDetail(property.id)">
               View Details <i class="ti ti-arrow-right"></i>
             </button>
           </div>
         </div>
+
       </div>
     </div>
+
   </div>
 </div>

@@ -1,0 +1,118 @@
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: #1a2942;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sb-logo {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  i { font-size: 24px; color: #c9a84c; }
+}
+
+.sb-section {
+  padding: 1rem 1rem 0.4rem;
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sb-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 1rem;
+  color: rgba(255,255,255,0.6);
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 2px 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+
+  i { font-size: 18px; }
+
+  &.active {
+    background: rgba(201,168,76,0.15);
+    color: #c9a84c;
+  }
+
+  &:hover:not(.active) {
+    background: rgba(255,255,255,0.06);
+    color: white;
+  }
+}
+
+.sb-bottom {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.sb-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sb-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c9a84c;
+  font-size: 13px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.sb-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sb-name {
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sb-role {
+  color: rgba(255,255,255,0.4);
+  font-size: 11px;
+}
+
+.sb-logout {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+
+  i { font-size: 18px; }
+  &:hover { color: white; background: rgba(255,255,255,0.1); }
+}

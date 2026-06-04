@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PropertyAdd } from './property-add.component';
+import { MortgageCalculator } from './mortgage-calculator.component';
 
-describe('PropertyAdd', () => {
-  let component: PropertyAdd;
-  let fixture: ComponentFixture<PropertyAdd>;
+describe('MortgageCalculator', () => {
+  let component: MortgageCalculator;
+  let fixture: ComponentFixture<MortgageCalculator>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PropertyAdd],
+      imports: [MortgageCalculator],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PropertyAdd);
+    fixture = TestBed.createComponent(MortgageCalculator);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

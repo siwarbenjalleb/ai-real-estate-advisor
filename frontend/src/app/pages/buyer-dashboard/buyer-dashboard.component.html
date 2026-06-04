@@ -1,0 +1,147 @@
+<div class="page">
+
+  <div class="topbar">
+    <div>
+      <h1>{{ getGreeting() }}, {{ firstName }} 👋</h1>
+      <p>Here's what's happening in your real estate journey</p>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-primary" routerLink="/properties">
+        <i class="ti ti-search"></i> Browse Properties
+      </button>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon gold">
+        <i class="ti ti-heart"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num">{{ stats.saved }}</div>
+        <div class="stat-label">Saved Properties</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <i class="ti ti-eye"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num">{{ stats.viewed }}</div>
+        <div class="stat-label">Properties Viewed</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <i class="ti ti-brain"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num">{{ stats.predictions }}</div>
+        <div class="stat-label">AI Predictions Run</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">
+        <i class="ti ti-building"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num">{{ stats.matches }}</div>
+        <div class="stat-label">Available Properties</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Latest Properties</h2>
+        <a routerLink="/properties" class="card-link">View all</a>
+      </div>
+
+      <div class="loading-state" *ngIf="loading">
+        <div class="spinner"></div>
+      </div>
+
+      <div class="prop-list" *ngIf="!loading">
+        <div class="prop-item" *ngFor="let p of recentProperties"
+             (click)="goToProperty(p.id)">
+          <div class="prop-img">
+            <img [src]="p.imageUrl || 'https://placehold.co/60x60/1a2942/ffffff?text=🏠'"
+                 [alt]="p.title" />
+          </div>
+          <div class="prop-info">
+            <div class="prop-title">{{ p.title }}</div>
+            <div class="prop-loc">
+              <i class="ti ti-map-pin"></i>
+              {{ p.location }}
+            </div>
+          </div>
+          <div class="prop-right">
+            <div class="prop-price">{{ p.price | number }} DT</div>
+            <span class="status-badge" [class]="getStatusClass(p.status)">
+              {{ p.status?.replace('_', ' ') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="empty" *ngIf="recentProperties.length === 0">
+          <i class="ti ti-home-off"></i>
+          <p>No properties yet</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-col">
+
+      <div class="card ai-card">
+        <div class="ai-header">
+          <i class="ti ti-brain"></i>
+          <div>
+            <h3>AI Price Predictor</h3>
+            <p>Get instant property valuation</p>
+          </div>
+        </div>
+        <p class="ai-desc">
+          Browse any property and click "Get AI Prediction" to see the estimated market value, investment score, and ROI analysis.
+        </p>
+        <button class="btn-primary full" routerLink="/properties">
+          <i class="ti ti-sparkles"></i> Try It Now
+        </button>
+      </div>
+
+      <div class="card calculator-card">
+        <div class="calc-header">
+          <i class="ti ti-calculator"></i>
+          <div>
+            <h3>Mortgage Calculator</h3>
+            <p>Plan your financing</p>
+          </div>
+        </div>
+        <p class="calc-desc">
+          Calculate your monthly payments, total interest, and find the best financing option for your budget.
+        </p>
+        <button class="btn-outline full" routerLink="/mortgage-calculator">
+          <i class="ti ti-arrow-right"></i> Open Calculator
+        </button>
+      </div>
+
+      <div class="card market-card">
+        <div class="market-header">
+          <i class="ti ti-chart-line"></i>
+          <div>
+            <h3>Market Analytics</h3>
+            <p>Stay ahead of trends</p>
+          </div>
+        </div>
+        <p class="market-desc">
+          Explore price trends, district comparisons, and market insights powered by real data.
+        </p>
+        <button class="btn-outline full" routerLink="/market-analytics">
+          <i class="ti ti-arrow-right"></i> View Analytics
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
