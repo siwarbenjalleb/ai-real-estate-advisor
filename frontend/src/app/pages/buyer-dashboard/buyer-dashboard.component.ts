@@ -30,21 +30,23 @@ export class BuyerDashboardComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    this.http.get<any[]>(`${environment.apiUrl}/properties`).subscribe({
-      next: (data) => {
-        this.recentProperties = data.slice(0, 5);
-        this.stats.matches = data.length;
-        this.stats.saved = this.favorites.length;
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.loading = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
+ ngOnInit() {
+  const savedIds: number[] = JSON.parse(localStorage.getItem('favorites') || '[]');
+  this.stats.saved = savedIds.length;
+
+  this.http.get<any[]>(`${environment.apiUrl}/properties`).subscribe({
+    next: (data) => {
+      this.recentProperties = data.slice(0, 5);
+      this.stats.matches = data.length;
+      this.loading = false;
+      this.cdr.detectChanges();
+    },
+    error: () => {
+      this.loading = false;
+      this.cdr.detectChanges();
+    }
+  });
+}
 
   goToProperty(id: number) {
     this.router.navigate(['/properties', id]);

@@ -20,6 +20,36 @@
 
   p { font-size: 14px; color: #888; }
 }
+.favorites-section {
+  margin-top: 1.5rem;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    i { font-size: 18px; color: #e53935; }
+  }
+}
+
+.favorites-hint {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+
+  i {
+    font-size: 2rem;
+    color: #e53935;
+    flex-shrink: 0;
+  }
+
+  p {
+    flex: 1;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+  }
+}
 
 .btn-primary {
   display: inline-flex;

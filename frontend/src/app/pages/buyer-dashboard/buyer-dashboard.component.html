@@ -52,6 +52,20 @@
   </div>
 
   <div class="content-grid">
+    <div class="card favorites-section" *ngIf="stats.saved > 0">
+  <div class="card-header">
+    <h2><i class="ti ti-heart"></i> Saved Properties</h2>
+    <a routerLink="/favorites" class="card-link">View all ({{ stats.saved }})</a>
+  </div>
+  <div class="favorites-hint">
+    <i class="ti ti-heart-filled"></i>
+    <p>You have {{ stats.saved }} saved {{ stats.saved === 1 ? 'property' : 'properties' }}. 
+       Click "View all" to see them.</p>
+    <button class="btn-primary" routerLink="/favorites">
+      <i class="ti ti-arrow-right"></i> Go to Favorites
+    </button>
+  </div>
+</div>
 
     <div class="card">
       <div class="card-header">

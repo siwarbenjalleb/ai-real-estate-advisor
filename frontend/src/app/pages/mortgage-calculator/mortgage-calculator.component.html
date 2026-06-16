@@ -1,0 +1,156 @@
+<div class="page">
+  <div class="topbar">
+    <div>
+      <h1>Mortgage Calculator</h1>
+      <p>Plan your property financing with accurate estimates</p>
+    </div>
+  </div>
+
+  <div class="calc-layout">
+
+    <div class="inputs-card card">
+      <div class="card-header">
+        <h2><i class="ti ti-sliders"></i> Loan Parameters</h2>
+      </div>
+
+      <div class="inputs">
+
+        <div class="input-group">
+          <div class="input-label">
+            <label>Property Price</label>
+            <span class="input-value">{{ propertyPrice | number }} DT</span>
+          </div>
+          <input type="range" [(ngModel)]="propertyPrice"
+                 min="50000" max="5000000" step="10000" />
+          <div class="range-hints">
+            <span>50K</span><span>5M</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            <label>Down Payment</label>
+            <span class="input-value">{{ downPayment | number }} DT ({{ downPaymentPercent }}%)</span>
+          </div>
+          <input type="range" [(ngModel)]="downPayment"
+                 [min]="propertyPrice * 0.1" [max]="propertyPrice * 0.9" step="5000" />
+          <div class="range-hints">
+            <span>10%</span><span>90%</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            <label>Interest Rate</label>
+            <span class="input-value">{{ interestRate }}%</span>
+          </div>
+          <input type="range" [(ngModel)]="interestRate"
+                 min="1" max="20" step="0.1" />
+          <div class="range-hints">
+            <span>1%</span><span>20%</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            <label>Loan Term</label>
+            <span class="input-value">{{ loanTermYears }} years</span>
+          </div>
+          <input type="range" [(ngModel)]="loanTermYears"
+                 min="5" max="30" step="1" />
+          <div class="range-hints">
+            <span>5 yrs</span><span>30 yrs</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="results-col">
+
+      <div class="monthly-card card">
+        <div class="monthly-label">Monthly Payment</div>
+        <div class="monthly-value">{{ monthlyPayment | number:'1.0-0' }} DT</div>
+        <div class="monthly-sub">for {{ loanTermYears }} years</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon gold"><i class="ti ti-home"></i></div>
+          <div>
+            <div class="stat-num">{{ loanAmount | number }} DT</div>
+            <div class="stat-label">Loan Amount</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="ti ti-cash"></i></div>
+          <div>
+            <div class="stat-num">{{ totalPayment | number:'1.0-0' }} DT</div>
+            <div class="stat-label">Total Payment</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red"><i class="ti ti-percentage"></i></div>
+          <div>
+            <div class="stat-num">{{ totalInterest | number:'1.0-0' }} DT</div>
+            <div class="stat-label">Total Interest</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="ti ti-piggy-bank"></i></div>
+          <div>
+            <div class="stat-num">{{ downPayment | number }} DT</div>
+            <div class="stat-label">Down Payment</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card breakdown-card">
+        <div class="card-header">
+          <h2>Payment Breakdown</h2>
+        </div>
+        <div class="breakdown-content">
+          <div class="breakdown-bar">
+            <div class="bar-principal" [style.width.%]="principalPercent"></div>
+            <div class="bar-interest" [style.width.%]="interestPercent"></div>
+          </div>
+          <div class="breakdown-legend">
+            <div class="legend-item">
+              <span class="dot principal"></span>
+              <span>Principal — {{ principalPercent }}%</span>
+              <span class="leg-val">{{ loanAmount | number }} DT</span>
+            </div>
+            <div class="legend-item">
+              <span class="dot interest"></span>
+              <span>Interest — {{ interestPercent }}%</span>
+              <span class="leg-val">{{ totalInterest | number:'1.0-0' }} DT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card schedule-card">
+    <div class="card-header">
+      <h2>Yearly Amortization Schedule</h2>
+      <span class="card-sub">First 10 years</span>
+    </div>
+    <div class="schedule-table">
+      <div class="sch-header">
+        <span>Year</span>
+        <span>Principal Paid</span>
+        <span>Interest Paid</span>
+        <span>Remaining Balance</span>
+      </div>
+      <div class="sch-row" *ngFor="let row of getYearlySchedule()">
+        <span class="year-num">Year {{ row.year }}</span>
+        <span class="principal-val">{{ row.principal | number }} DT</span>
+        <span class="interest-val">{{ row.interest | number }} DT</span>
+        <span class="balance-val">{{ row.balance | number }} DT</span>
+      </div>
+    </div>
+  </div>
+
+</div>
