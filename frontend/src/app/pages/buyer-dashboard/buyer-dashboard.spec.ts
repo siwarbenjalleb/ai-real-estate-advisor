@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BuyerDashboard } from './buyer-dashboard';
+import { BuyerDashboard } from './buyer-dashboard.component';
 
 describe('BuyerDashboard', () => {
   let component: BuyerDashboard;
